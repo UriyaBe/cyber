@@ -22,10 +22,10 @@ var gameOver = false;
 const images = [
     'white.jpg',  // רקע לבן 0
     'black.png',  // 1 רקע שחור
-    'WhiteT.PNG',  // חייל לבן 2
-    'BlackT.PNG',  // 3 חייל שחור
-    'WhiteC.PNG',//כתר לבן 4
-    'BlackC.PNG'//כתר שחור 5
+    'WhiteT.png',  // חייל לבן 2
+    'BlackT.png',  // 3 חייל שחור
+    'WhiteC.png',//כתר לבן 4
+    'BlackC.png'//כתר שחור 5
 ];
 
 // מערך דו ממדי שמייצג את הלוח
