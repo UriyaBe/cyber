@@ -70,7 +70,7 @@ function playerVScomputerNAME() {
 }
 function startOnlineGame() {
     isOnlineGame = true;
-    ws = new WebSocket('ws://192.168.1.154:8765');
+    ws = new WebSocket('ws://10.103.144.193:8765');
 
     ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
