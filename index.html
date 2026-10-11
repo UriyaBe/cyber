@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -204,9 +204,16 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             width: 100%;
-            aspect-ratio: 1 / 1; /* מוודא שהלוח נשאר ריבוע מושלם */
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-            border: 2px solid #222;
+            aspect-ratio: 1 / 1;
+            /* -- שדרוג תלת ממד -- */
+            background-color: #3b2313;
+            border: 14px solid #4a2e1b; /* מסגרת עבה שנותנת תחושה של לוח עץ פיזי */
+            border-radius: 8px; /* עיגול עדין של הפינות */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7), /* צל חיצוני כבד שמרים את הלוח מהרקע */
+            inset 0 0 15px rgba(0,0,0,0.8); /* צל פנימי ששוקע פנימה */
+
+            position: relative;
+            z-index: 10;
         }
 
         .right-body {
@@ -234,9 +241,10 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
-            cursor: pointer;
-            /* -- איפוס הגדרות הכפתור כדי שכל הבלוק יהיה לחיץ -- */
+            /* תנועה חלקה יותר */
+            transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border 0.2s;
+            cursor: default;
+            /* איפוס כפתור כדי למנוע שטחים מתים (הפתרון הקודם) */
             padding: 0;
             margin: 0;
             border: none;
@@ -245,13 +253,29 @@
             -webkit-appearance: none;
             background-color: transparent;
             display: block;
+            /* צל פנימי עדין שנותן עומק לכל משבצת */
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+            position: relative;
         }
 
-            .cell:hover {
-                transform: scale(1.08);
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-                border: 2px solid white;
-                z-index: 2;
+        /* אפקט ריחוף לתור הלבן (פועל רק על כלים לבנים) */
+            .board.white-turn .white-piece:hover {
+                transform: scale(1.12) translateY(-4px);
+                box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6);
+                border: 2px solid #FFD700; /* מסגרת זהב */
+                border-radius: 5px;
+                z-index: 20;
+                cursor: pointer; /* רק פה העכבר יהפוך ליד לחיצה */
+            }
+
+            /* אפקט ריחוף לתור השחור (פועל רק על כלים שחורים) */
+            .board.black-turn .black-piece:hover {
+                transform: scale(1.12) translateY(-4px);
+                box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6);
+                border: 2px solid #FFD700; /* מסגרת זהב */
+                border-radius: 5px;
+                z-index: 20;
+                cursor: pointer; /* רק פה העכבר יהפוך ליד לחיצה */
             }
 
         /* עיצוב במקרה של סיום משחק וניצחון */
