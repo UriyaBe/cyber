@@ -57,20 +57,37 @@ function showPlayerName() {
         <input class="start" type="text" id="playerName" name="playerName">
         <input class="start" type="text" id="playerName2" name="playerName2">
         <br />
-        <button class="c" id="start" onclick="start()">click here to start the game</button>`;
+        <button class="c" id="start" onclick="start()">click here to start the game</button>
+        <button class="c" style="background-color: #f39c12; margin-top: 15px;" onclick="quickStartLocal()">Skip & Play (White vs Black)</button>`;
     document.getElementById("startdiv").innerHTML = s;
 }
+
 function playerVScomputerNAME() {
     var f = `<label id="label" style="left:40%;" class="start" for="playerName">what's your name?</label>
         <br />
         <input class="start" type="text" id="playerName" name="playerName">
         <br />
-        <button class="c" id="start" onclick="playerVScomputer()">click here to start the game</button>`;
+        <button class="c" id="start" onclick="playerVScomputer()">click here to start the game</button>
+        <button class="c" style="background-color: #f39c12; margin-top: 15px;" onclick="quickStartAI()">Skip & Play (White vs PC)</button>`;
     document.getElementById("startdiv").innerHTML = f;
+}
+
+// --- פונקציות חדשות לדילוג מהיר ---
+function quickStartLocal() {
+    // ממלא אוטומטית את השמות ומתחיל את המשחק
+    document.getElementById("playerName").value = "White player";
+    document.getElementById("playerName2").value = "Black player";
+    start();
+}
+
+function quickStartAI() {
+    // ממלא אוטומטית רק את השחקן האנושי כלבן ומתחיל מול מחשב
+    document.getElementById("playerName").value = "White player";
+    playerVScomputer();
 }
 function startOnlineGame() {
     isOnlineGame = true;
-    ws = new WebSocket('ws://192.168.1.153:8765');
+    ws = new WebSocket('ws://10.192.76.193:8765');
 
     ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
