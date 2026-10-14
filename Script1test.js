@@ -935,14 +935,6 @@ function evaluateBoard(boardArr) {
             }
             else if (piece === 5) score += 16;
             else if (piece === 4) score -= 16;
-            const blackmoves = getAllTurnOptions(boardArr, false);
-            if (blackmoves.length === 0) {
-                score -= 100;
-            }
-            const whitemoves = getAllTurnOptions(boardArr, true);
-            if (whitemoves.length === 0) {
-                score += 100;
-            }
         }
     }
     return score;
