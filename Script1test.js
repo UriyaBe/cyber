@@ -1,7 +1,7 @@
 // המערך המקורי
-var ws = null;
-var myColor = null; // ישמור 'white' או 'black'
-var isOnlineGame = false;
+var ws = null; // שומר את אובייקט החיבור (WebSocket) מול שרת הפייתון
+var myColor = null; // ישמור 'white' או 'black' (הצבע שהשרת קבע עבורי)
+var isOnlineGame = false; // מסמן האם אנחנו במשחק אונליין מול השרת (true) או במשחק רגיל (false)
 var isEatingStreak = false;
 var playerturn = 0;
 var firstrow = null;
@@ -35,7 +35,7 @@ var board = [
     [0, 3, 0, 3, 0, 3, 0, 3],
     [1, 0, 1, 0, 1, 0, 1, 0],
     [0, 1, 0, 1, 0, 1, 0, 1],
-    [2, 0, 2, 0, 2, 0, 2, 0],
+    [2, 0, 4, 0, 2, 0, 2, 0],
     [0, 2, 0, 2, 0, 2, 0, 2],
     [2, 0, 2, 0, 2, 0, 2, 0]
 ];
@@ -85,22 +85,31 @@ function quickStartAI() {
     document.getElementById("playerName").value = "White player";
     playerVScomputer();
 }
+// פונקציה שמתחברת לשרת הפייתון ומטפלת בכל ההודעות שמגיעות ממנו
 function startOnlineGame() {
-    isOnlineGame = true;
-    ws = new WebSocket('ws://10.192.76.193:8765');
+    isOnlineGame = true; // מפעיל את מצב האונליין במשחק
 
+    // פתיחת חיבור (WebSocket) מול כתובת ה-IP של המחשב שמריץ את הפייתון בפורט 8765
+    ws = new WebSocket('ws://192.168.1.153:8765');
+
+    // פונקציה שמופעלת אוטומטית בכל פעם ששרת הפייתון שולח הודעה לדפדפן שלנו
     ws.onmessage = function (event) {
+        // המרת הודעת הטקסט (JSON) שהגיעה מהפייתון לאובייקט ש-JavaScript יודע לקרוא
         const data = JSON.parse(event.data);
 
+        // כשמתחברים לשרת ומקבלים ממנו את הצבע שלנו ('white' או 'black')
         if (data.type === 'init') {
-            myColor = data.color;
+            myColor = data.color; // שמירת הצבע שקיבלנו מהשרת
+            // הצגת הודעת המתנה על המסך עד שהשחקן השני יתחבר
             document.getElementById("startdiv").innerHTML = `<div style="font-size: 30px; color: white; text-align: center; margin-top: 20%; font-family: Arial;">Connected as ${myColor}. Waiting for opponent...</div>`;
         }
 
+        // כשהשרת מודיע ששני השחקנים מחוברים ואפשר להתחיל את המשחק
         if (data.type === 'start') {
-            document.getElementById("startdiv").remove();
-            document.getElementById("container").style.visibility = 'visible';
+            document.getElementById("startdiv").remove(); // מחיקת מסך ההמתנה
+            document.getElementById("container").style.visibility = 'visible'; // הצגת אזור המשחק
 
+            // הגדרת שמות השחקנים לפי הצבע שהשרת נתן לנו
             if (myColor === 'white') {
                 playername = "White (You)";
                 playername2 = "Black (Opponent)";
@@ -109,16 +118,17 @@ function startOnlineGame() {
                 playername2 = "Black (You)";
             }
             divturn.innerHTML = "White's turn";
-            displayBoard();
+            displayBoard(); // ציור הלוח על המסך
         }
 
-        // כשהיריב שולח מהלך
+        // כשהיריב שולח מהלך (דרך שרת הפייתון)
         if (data.type === 'move') {
+            // אם המהלך של היריב כלל אכילה - מוחקים את הכלי שנאכל בלוח שלנו (הופכים ל-1)
             if (data.isEat) {
                 board[data.eatRow][data.eatCol] = 1; // מחיקת הכלי הנאכל
             }
 
-            // בדיקת הכתרה של היריב
+            // בדיקת הכתרה של היריב (אם חייל שלו הגיע לקצה הלוח, הופכים אותו למלך גם אצלנו)
             if (board[data.fromRow][data.fromCol] === 2 && data.toRow === 0) {
                 board[data.fromRow][data.fromCol] = 4;
             }
@@ -126,13 +136,13 @@ function startOnlineGame() {
                 board[data.fromRow][data.fromCol] = 5;
             }
 
-            // ציור המהלך על הלוח שלנו
+            // ציור המהלך של היריב על הלוח שלנו לפי משבצת המוצא ומשבצת היעד שהוא שלח
             movePiece(data.fromRow, data.fromCol, data.toRow, data.toCol);
         }
 
-        // כשהיריב מסיים את התור שלו
+        // כשהיריב מסיים את התור שלו (השרת העביר לנו הודעת סיום תור)
         if (data.type === 'finishTurn') {
-            finishTurn();
+            finishTurn(); // מעביר את התור אלינו במכשיר שלנו
         }
     };
 }
@@ -195,6 +205,9 @@ function displayBoard() {
             } else if (board[i][j] === 3 || board[i][j] === 5) {
                 cell.classList.add('black-piece');
             }
+            if (board[i][j] === 4 || board[i][j] === 5) {
+                cell.classList.add('king');
+            }
             if (board[i][j] !== 3 && board[i][j] !== 5) {
                 whitewin++;
             }
@@ -239,7 +252,7 @@ function displayBoard() {
         boardElement.classList.add('black-turn');
         boardElement.classList.remove('white-turn');
     }
-    const isWhiteWin = false;
+    let isWhiteWin = false;
     const isWhiteTurn = (playerturn % 2 === 0);
     const checkMovesForWhite = isWhiteTurn ? false : true;
     const moves = getAllTurnOptions(board, checkMovesForWhite);
@@ -311,9 +324,10 @@ function handleSelectPiece(cell, row, col) {
     } else {
         isWhiteTurn = false;
     }
+    // אם אנחנו במשחק אונליין - מוודא שהשחקן יכול לבחור כלים רק כשזה התור של הצבע שלו
     if (isOnlineGame) {
-        if (myColor === 'white' && !isWhiteTurn) return; // לא התור שלך
-        if (myColor === 'black' && isWhiteTurn) return; // לא התור שלך
+        if (myColor === 'white' && !isWhiteTurn) return; // לא התור שלך (אני לבן ועכשיו תור השחור)
+        if (myColor === 'black' && isWhiteTurn) return; // לא התור שלך (אני שחור ועכשיו תור הלבן)
     }
     if (vsComputer && !isWhiteTurn) {
         return; // המחשב חושב עכשיו, השחקן לא יכול לבחור כלים שחורים
@@ -476,16 +490,17 @@ function handleMovePiece(cell, row, col) {
         // הפיכת החייל השחור למלך שחור (5)
         board[firstrow][firstcol] = 5;
     }
+    // אם אנחנו במשחק אונליין - אורז את פרטי המהלך שעשינו ושולח לשרת הפייתון כדי שיעביר ליריב
     if (isOnlineGame) {
-        ws.send(JSON.stringify({
-            type: 'move',
-            fromRow: firstrow,
-            fromCol: firstcol,
-            toRow: row,
-            toCol: col,
-            isEat: wasEat,
-            eatRow: wasEat ? chosenMove.eatRow : null,
-            eatCol: wasEat ? chosenMove.eatCol : null
+        ws.send(JSON.stringify({ // ממיר את הנתונים לטקסט בפורמט JSON ושולח בצינור התקשורת
+            type: 'move', // סוג ההודעה: תזוזה של כלי
+            fromRow: firstrow, // השורה שממנה הכלי יצא
+            fromCol: firstcol, // העמודה שממנה הכלי יצא
+            toRow: row, // השורה שאליה הכלי הגיע
+            toCol: col, // העמודה שאליה הכלי הגיע
+            isEat: wasEat, // האם התבצעה אכילה במהלך הזה (true או false)
+            eatRow: wasEat ? chosenMove.eatRow : null, // אם הייתה אכילה - השורה של הכלי שנאכל
+            eatCol: wasEat ? chosenMove.eatCol : null  // אם הייתה אכילה - העמודה של הכלי שנאכל
         }));
     }
     // קריאה לפונקציה המקורית שמבצעת החלפה בלוח, מנקה HTML ומציירת מחדש
@@ -709,11 +724,12 @@ function noValidMoves() {
 }
 // פונקציה שמעבירה את התור ומנקה מצב
 function finishTurn() {
+    // אם אנחנו במשחק אונליין - מודיעים לשרת הפייתון שסיימנו את התור שלנו
     if (isOnlineGame) {
-        // נבדק האם אני זה שסיים עכשיו את התור, כדי שלא יהיה לופ אינסופי
+        // נבדק האם אני זה שסיים עכשיו את התור, כדי שלא יהיה לופ אינסופי בין שני המחשבים
         const isMyTurn = (myColor === 'white' && playerturn % 2 === 0) || (myColor === 'black' && playerturn % 2 !== 0);
-        if (isMyTurn && ws.readyState === 1) { // 1 אומר שהחיבור פתוח
-            ws.send(JSON.stringify({ type: 'finishTurn' }));
+        if (isMyTurn && ws.readyState === 1) { // 1 אומר שהחיבור לשרת פתוח ותקין
+            ws.send(JSON.stringify({ type: 'finishTurn' })); // שליחת הודעת סיום תור לשרת
         }
     }
     const skipBtn = document.getElementById('skipEatBtn');
@@ -884,6 +900,10 @@ function exploreEatChain(boardArr, fromRow, fromCol, move, pathSoFar, options) {
 }
 function minimax(boardArr, depth, isWhiteTurn, alpha, beta) {
     const turnOptions = getAllTurnOptions(boardArr, isWhiteTurn);
+    if (turnOptions.length === 0) {
+        // למי שבתור אין מהלכים = הוא הפסיד
+        return { score: isWhiteTurn ? 10000 + depth : -10000 - depth, path: null };
+    }
     if (depth === 0 || turnOptions.length === 0) {
         return { score: evaluateBoard(boardArr), path: null };
     }
