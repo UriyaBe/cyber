@@ -2,165 +2,258 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- הגדרה קריטית למובייל: מונעת זום בלחיצה כפולה ומגדירה תצוגה נכונה -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>לוח דמקה</title>
+    <title>Uriya's Damka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Instrument+Sans:wght@500;600&display=swap" rel="stylesheet">
     <style>
-        /* איפוס בסיסי לגלישה חלקה ולחיצות במובייל */
+        :root {
+            --felt: #0d2b27;
+            --felt-deep: #06171a;
+            --brass: #d8a94a;
+            --brass-soft: #f0cf8a;
+            --ivory: #f6efdc;
+            --walnut: #5a331c;
+            --walnut-dark: #3a1f10;
+            --maple: #ecd5a8;
+            --go: #58f0b0;
+            --danger: #ff5a5f;
+            --display: 'Fraunces',Georgia,serif;
+            --body: 'Instrument Sans','Segoe UI',Arial,sans-serif;
+        }
+
         * {
             box-sizing: border-box;
-            touch-action: manipulation; /* מבטל את הדיליי בלחיצות במכשירי טאצ' */
+            touch-action: manipulation
         }
 
         body {
             margin: 0;
-            padding: 0;
-            background-image: url('bluebackground.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            font-family: Arial, sans-serif;
             min-height: 100vh;
+            font-family: var(--body);
+            color: var(--ivory);
+            background: radial-gradient(ellipse 80% 60% at 50% 38%,rgba(40,120,104,.55),transparent 70%), repeating-linear-gradient(45deg,rgba(255,255,255,.018) 0 2px,transparent 2px 5px), linear-gradient(180deg,var(--felt),var(--felt-deep));
+            background-attachment: fixed;
         }
 
-        /* --- מסכי הפתיחה והתפריטים --- */
+            body::after {
+                content: "";
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                box-shadow: inset 0 0 160px rgba(0,0,0,.65)
+            }
+
+        /* ---------- start screens ---------- */
         #startdiv {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
             text-align: center;
             width: 100%;
+            position: relative;
+            z-index: 2
         }
 
-        .startbutton, .mode-btn {
-            width: 90vw;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-            transition: transform 0.2s, background-color 0.2s;
-            color: white;
-            font-weight: bold;
-            margin: 10px;
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px
         }
+
+        .emblem {
+            position: relative;
+            width: 132px;
+            height: 92px;
+            margin-bottom: 6px
+        }
+
+            .emblem i {
+                position: absolute;
+                width: 84px;
+                height: 84px;
+                border-radius: 50%
+            }
+
+            .emblem .a {
+                left: 0;
+                top: 0;
+                background: radial-gradient(circle at 35% 28%,#fff,#efe4c8 45%,#b9a878);
+                box-shadow: 0 6px 0 #9c8a58,0 16px 22px rgba(0,0,0,.55)
+            }
+
+            .emblem .b {
+                right: 0;
+                top: 8px;
+                background: radial-gradient(circle at 35% 28%,#5a5a62,#1b1b20 55%,#07070a);
+                box-shadow: 0 6px 0 #000,0 16px 22px rgba(0,0,0,.6)
+            }
+
+                .emblem .b::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23d8a94a' d='M2.5 19h19v2.5h-19zM2 7.5l5.2 4.3L12 3.5l4.8 8.3L22 7.5 19.8 17H4.2z'/%3E%3C/svg%3E") center 52%/48% no-repeat;
+                    filter: drop-shadow(0 0 8px rgba(216,169,74,.7))
+                }
+
+        .hero h1 {
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: clamp(3rem,11vw,6.5rem);
+            line-height: .95;
+            margin: 0;
+            letter-spacing: -.02em;
+            background: linear-gradient(180deg,var(--brass-soft),var(--brass) 55%,#9a6f22);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 4px 14px rgba(0,0,0,.5))
+        }
+
+        .hero p {
+            margin: 0;
+            font-size: clamp(1rem,3vw,1.25rem);
+            color: rgba(246,239,220,.75);
+            max-width: 34ch
+        }
+
+        .startbutton, .mode-btn, button.c {
+            font-family: var(--body);
+            font-weight: 600;
+            cursor: pointer;
+            color: #2a1a06;
+            border: 0;
+            border-radius: 14px;
+            background: linear-gradient(180deg,var(--brass-soft),var(--brass));
+            box-shadow: 0 5px 0 #8c6420,0 14px 26px rgba(0,0,0,.45);
+            transition: transform .15s,box-shadow .15s,filter .15s
+        }
+
+            .startbutton:hover, .mode-btn:hover, button.c:hover {
+                transform: translateY(-2px);
+                filter: brightness(1.07)
+            }
+
+            .startbutton:active, .mode-btn:active, button.c:active {
+                transform: translateY(3px);
+                box-shadow: 0 2px 0 #8c6420,0 6px 12px rgba(0,0,0,.4)
+            }
 
         .startbutton {
-            background-color: steelblue;
+            padding: 18px 44px;
+            font-size: clamp(1.15rem,4vw,1.5rem);
+            margin-top: 10px
         }
-
-            .startbutton:hover {
-                background-color: #3b749e;
-                transform: scale(1.05);
-            }
 
         .mode-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            width: 100%;
+            gap: 26px;
+            width: 100%
         }
 
         .mode-title {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-            text-align: center;
-            margin-bottom: 10px;
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: clamp(2rem,7vw,3.2rem);
+            color: var(--brass-soft);
+            text-shadow: 0 3px 12px rgba(0,0,0,.6)
         }
 
         .mode-buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
             width: 100%;
-            align-items: center;
+            align-items: center
         }
 
-        /* למסכים גדולים יותר (טאבלטים ומחשבים) - הכפתורים יוצגו בשורה */
-        @media (min-width: 768px) {
+        .mode-btn {
+            width: min(86vw,360px);
+            padding: 18px 22px;
+            font-size: 1.2rem;
+            background: linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03)) !important;
+            color: var(--ivory);
+            border: 1.5px solid rgba(216,169,74,.55);
+            box-shadow: 0 10px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12);
+            backdrop-filter: blur(6px)
+        }
+
+            .mode-btn:hover {
+                border-color: var(--brass-soft);
+                box-shadow: 0 12px 30px rgba(0,0,0,.5),0 0 22px rgba(216,169,74,.25)
+            }
+
+        @media(min-width:768px) {
             .mode-buttons {
                 flex-direction: row;
-                justify-content: center;
+                justify-content: center
             }
 
             .mode-btn {
                 width: auto;
-                padding: 15px 30px;
+                padding: 20px 30px
             }
         }
 
-        .friend-btn {
-            background-color: #27ae60;
-        }
-
-            .friend-btn:hover {
-                background-color: #219653;
-                transform: scale(1.05);
-            }
-
-        .ai-btn {
-            background-color: #2980b9;
-        }
-
-            .ai-btn:hover {
-                background-color: #2471a3;
-                transform: scale(1.05);
-            }
-
-        /* דריסת העיצוב האבסולוטי שנוצר מה-JS לתצוגה רספונסיבית */
         label.start, input.start, button.c {
             position: static !important;
-            transform: none !important;
+            transform: none;
             display: block;
-            margin: 10px auto;
+            margin: 10px auto
         }
 
         label.start {
-            color: white;
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-family: var(--display);
+            font-size: clamp(1.1rem,4vw,1.5rem);
+            color: var(--brass-soft);
+            text-shadow: 0 2px 6px rgba(0,0,0,.6)
         }
 
         input.start {
-            padding: 12px;
-            font-size: 1.2rem;
-            border-radius: 12px;
-            border: 2px solid white;
-            width: 90vw;
-            max-width: 350px;
+            width: min(86vw,340px);
+            padding: 14px;
+            font: 600 1.1rem var(--body);
             text-align: center;
-            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--ivory);
+            background: rgba(0,0,0,.35);
+            border: 1.5px solid rgba(216,169,74,.5);
+            border-radius: 12px;
+            outline: none
         }
 
-        button.c {
-            padding: 15px 30px;
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            border-radius: 15px;
-            border: none;
-            background-color: #27ae60;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 25px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
-        }
-
-            button.c:hover {
-                transform: scale(1.05);
-                background-color: #219653;
+            input.start:focus {
+                border-color: var(--brass-soft);
+                box-shadow: 0 0 0 3px rgba(216,169,74,.25)
             }
 
-        /* --- אזור הלוח והמשחק --- */
+        button.c {
+            padding: 15px 32px;
+            font-size: 1.15rem;
+            margin-top: 22px
+        }
+
+            button.c[style] {
+                background: transparent !important;
+                color: var(--brass-soft);
+                border: 1.5px solid rgba(216,169,74,.5);
+                box-shadow: none;
+                margin-top: 14px !important
+            }
+
+        :focus-visible {
+            outline: 3px solid var(--go);
+            outline-offset: 3px
+        }
+
+        /* ---------- game ---------- */
         .container {
             visibility: hidden;
             display: flex;
@@ -168,235 +261,353 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 0; /* איפסנו את הריווח כדי לתת ללוח כמה שיותר מקום */
             position: relative;
+            z-index: 2
         }
 
         .board-wrapper {
             position: relative;
             display: flex;
             flex-direction: column;
-            width: 88vmin; /* חזרנו ללוח ענק שמתאים בול לטלפון! */
-            max-width: 600px;
-            margin-top: -40px; /* מרים את הלוח קצת למעלה כדי לאזן את המסך */
+            width: min(84vw,70vh,620px);
+            margin-top: -30px
+        }
+
+        .top-body, .right-body {
+            font-family: var(--display);
+            font-weight: 600;
+            color: var(--brass);
+            font-size: clamp(.8rem,2.6vw,1.15rem);
+            opacity: .85
         }
 
         .top-body {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            width: 100%;
+            grid-template-columns: repeat(8,1fr);
             text-align: center;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin-bottom: 5px;
-            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: 8px;
+            padding: 0 clamp(8px,2vw,16px)
         }
 
         .board-and-right {
             position: relative;
             width: 100%;
-            display: flex;
-        }
-
-        .board {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            /* -- שדרוג תלת ממד -- */
-            background-color: #3b2313;
-            border: 14px solid #4a2e1b; /* מסגרת עבה שנותנת תחושה של לוח עץ פיזי */
-            border-radius: 8px; /* עיגול עדין של הפינות */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7), /* צל חיצוני כבד שמרים את הלוח מהרקע */
-            inset 0 0 15px rgba(0,0,0,0.8); /* צל פנימי ששוקע פנימה */
-
-            position: relative;
-            z-index: 10;
+            display: flex
         }
 
         .right-body {
             display: grid;
-            grid-template-rows: repeat(8, 1fr);
+            grid-template-rows: repeat(8,1fr);
             position: absolute;
-            left: 100%; /* ממקם את המספור בדיוק בקצה הימני של הלוח */
+            left: 100%;
             top: 0;
             height: 100%;
-            padding-left: 10px;
-            align-items: center;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            font-size: clamp(1rem, 3vw, 1.5rem);
+            padding: clamp(8px,2vw,16px) 0 clamp(8px,2vw,16px) 10px;
+            align-items: center
         }
 
-        .left-body {
-            display: none; /* הוסתר - מספיק לנו המספור למעלה ומימין */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8,1fr);
+            grid-template-rows: repeat(8,1fr);
+            width: 100%;
+            aspect-ratio: 1/1;
+            position: relative;
+            z-index: 10;
+            border: clamp(8px,2vw,16px) solid #2b160a;
+            border-radius: 10px;
+            border-image: none;
+            background: #2b160a;
+            box-shadow: 0 0 0 2px var(--brass),0 0 0 5px #1a0d05,0 30px 60px rgba(0,0,0,.75),inset 0 0 18px rgba(0,0,0,.9)
         }
 
         .cell, .whitecell {
             width: 100%;
             height: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            /* תנועה חלקה יותר */
-            transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border 0.2s;
-            cursor: default;
-            /* איפוס כפתור כדי למנוע שטחים מתים (הפתרון הקודם) */
             padding: 0;
             margin: 0;
-            border: none;
+            border: none !important;
             outline: none;
             appearance: none;
             -webkit-appearance: none;
-            background-color: transparent;
             display: block;
-            /* צל פנימי עדין שנותן עומק לכל משבצת */
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
             position: relative;
+            cursor: default;
+            background-size: auto !important
         }
 
-        /* אפקט ריחוף לתור הלבן (פועל רק על כלים לבנים) */
-            .board.white-turn .white-piece:hover {
-                transform: scale(1.12) translateY(-4px);
-                box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6);
-                border: 2px solid #FFD700; /* מסגרת זהב */
-                border-radius: 5px;
-                z-index: 20;
-                cursor: pointer; /* רק פה העכבר יהפוך ליד לחיצה */
-            }
+        .whitecell {
+            background: linear-gradient(135deg,#f3dfb4,#dcbb86) !important;
+            box-shadow: inset 0 0 10px rgba(120,80,30,.35)
+        }
 
-            /* אפקט ריחוף לתור השחור (פועל רק על כלים שחורים) */
-            .board.black-turn .black-piece:hover {
-                transform: scale(1.12) translateY(-4px);
-                box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6);
-                border: 2px solid #FFD700; /* מסגרת זהב */
-                border-radius: 5px;
-                z-index: 20;
-                cursor: pointer; /* רק פה העכבר יהפוך ליד לחיצה */
-            }
+        .cell {
+            background: repeating-linear-gradient(92deg,rgba(255,255,255,.035) 0 1px,transparent 1px 7px), linear-gradient(135deg,#6d3f22,#46250f) !important;
+            box-shadow: inset 0 0 12px rgba(0,0,0,.55)
+        }
 
-        /* עיצוב במקרה של סיום משחק וניצחון */
+        /* pieces */
+        .white-piece::before, .black-piece::before, .white-piece::after, .black-piece::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            transition: transform .2s ease-out,box-shadow .2s
+        }
+
+        .white-piece::after, .black-piece::after {
+            inset: 10%;
+            z-index: 1
+        }
+
+        .white-piece::before, .black-piece::before {
+            inset: 25%;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            font-size: clamp(.8rem,3.6vw,1.8rem);
+            line-height: 1
+        }
+
+        .white-piece::after {
+            background: radial-gradient(circle at 34% 28%,#fff 0,#f4ead0 38%,#cbbd98 100%);
+            box-shadow: 0 4px 0 #9d8c5a,0 9px 12px rgba(0,0,0,.6),inset 0 -4px 7px rgba(90,70,30,.25),inset 0 2px 3px #fff
+        }
+
+        .black-piece::after {
+            background: radial-gradient(circle at 34% 28%,#6b6b75 0,#26262c 42%,#060608 100%);
+            box-shadow: 0 4px 0 #000,0 9px 12px rgba(0,0,0,.7),inset 0 -4px 7px rgba(0,0,0,.6),inset 0 2px 3px rgba(255,255,255,.28)
+        }
+
+        .white-piece::before {
+            border: 2px solid rgba(120,95,40,.45)
+        }
+
+        .black-piece::before {
+            border: 2px solid rgba(216,169,74,.35)
+        }
+
+        .king::before {
+            content: "" !important;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23d8a94a' d='M2.5 19h19v2.5h-19zM2 7.5l5.2 4.3L12 3.5l4.8 8.3L22 7.5 19.8 17H4.2z'/%3E%3C/svg%3E") center 52%/62% no-repeat;
+            border-color: var(--brass);
+            filter: drop-shadow(0 0 4px rgba(216,169,74,.8))
+        }
+
+        .white-piece.king::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a8741a' d='M2.5 19h19v2.5h-19zM2 7.5l5.2 4.3L12 3.5l4.8 8.3L22 7.5 19.8 17H4.2z'/%3E%3C/svg%3E");
+            filter: drop-shadow(0 1px 0 #fff)
+        }
+
+        .board.white-turn .white-piece:hover::before, .board.white-turn .white-piece:hover::after,
+        .board.black-turn .black-piece:hover::before, .board.black-turn .black-piece:hover::after {
+            transform: translateY(-4px) scale(1.06);
+            cursor: pointer
+        }
+
+        .board.white-turn .white-piece:hover, .board.black-turn .black-piece:hover {
+            cursor: pointer
+        }
+
+        /* highlights (JS sets inline borders; we restyle them by colour) */
+        .cell[style*="green"]::after {
+            box-shadow: 0 0 0 3px var(--go),0 0 22px 4px rgba(88,240,176,.7),0 9px 12px rgba(0,0,0,.6) !important
+        }
+
+        .cell:not(.white-piece):not(.black-piece)[style*="red"]::after {
+            content: "";
+            position: absolute;
+            inset: 34%;
+            border-radius: 50%;
+            background: var(--go);
+            box-shadow: 0 0 16px var(--go);
+            animation: pulse 1.2s ease-in-out infinite
+        }
+
+        .cell:not(.white-piece):not(.black-piece)[style*="gold"]::after {
+            content: "";
+            position: absolute;
+            inset: 18%;
+            border-radius: 50%;
+            border: 4px solid var(--brass-soft);
+            box-shadow: 0 0 18px var(--brass),inset 0 0 12px rgba(216,169,74,.5);
+            animation: pulse 1s ease-in-out infinite
+        }
+
+        .white-piece[style*="red"], .black-piece[style*="red"] {
+            box-shadow: inset 0 0 0 3px var(--danger),inset 0 0 24px rgba(255,90,95,.6) !important
+        }
+
+        @keyframes pulse {
+            50% {
+                transform: scale(1.18);
+                opacity: .75
+            }
+        }
+
+        /* win */
         .boardwin {
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 1/1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-size: clamp(2.5rem, 7vw, 5rem);
-            color: #2de370;
-            background-color: rgba(0, 0, 0, 0.85);
-            font-weight: bold;
-            border-radius: 15px;
-            text-shadow: 2px 2px 5px black;
+            padding: 20px;
+            font-family: var(--display);
+            font-weight: 800;
+            font-size: clamp(2rem,8vw,4rem);
+            color: var(--brass-soft);
+            border-radius: 14px;
+            background: radial-gradient(circle,rgba(216,169,74,.22),rgba(0,0,0,.88) 70%);
+            border: 2px solid var(--brass);
+            box-shadow: 0 30px 60px rgba(0,0,0,.7);
+            text-shadow: 0 4px 16px rgba(0,0,0,.8)
         }
 
+            .boardwin::before {
+                content: "♛";
+                font-size: 1.6em;
+                color: var(--brass);
+                filter: drop-shadow(0 0 18px rgba(216,169,74,.8));
+                margin-bottom: 6px
+            }
+
+        /* turn pill */
         .bottom-body {
-            /* --- עיצוב למובייל (גלולה מרחפת בתחתית) --- */
             position: fixed;
-            bottom: 25px;
+            bottom: 22px;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
-            transition: color 0.2s ease-out;
-            font-size: clamp(1.2rem, 4vw, 2rem);
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
             z-index: 50;
-            pointer-events: none; /* קריטי: נותן ללחיצות לעבור דרך הטקסט אל הלוח */
-            background-color: rgba(0, 0, 0, 0.5); /* רקע שקוף עדין שמבליט את הטקסט */
-            padding: 8px 20px;
-            border-radius: 30px;
-            width: auto;
+            pointer-events: none;
             white-space: nowrap;
+            padding: 10px 24px 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: clamp(1rem,3.6vw,1.3rem);
+            color: var(--ivory);
+            background: rgba(0,0,0,.5);
+            border: 1px solid rgba(216,169,74,.45);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.5)
         }
 
-        /* --- עיצוב למחשב ולמסכים גדולים --- */
-        @media (min-width: 768px) {
+            .bottom-body::before {
+                content: "";
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                margin-right: 10px;
+                vertical-align: -1px;
+                background: var(--ivory);
+                box-shadow: 0 0 10px rgba(246,239,220,.8);
+                transition: background .3s
+            }
+
+        .container:has(.board.black-turn) .bottom-body::before {
+            background: #15151a;
+            box-shadow: 0 0 0 2px var(--brass),0 0 10px rgba(216,169,74,.6)
+        }
+
+        @media(min-width:768px) {
             .bottom-body {
-                position: static; /* מבטל את הריחוף במחשב */
-                transform: none; /* מבטל את ההזזה לאמצע */
-                margin-top: 25px; /* מוסיף מרווח נקי מתחת ללוח */
-                background-color: transparent; /* מעלים את הרקע של הגלולה */
-                padding: 0;
+                position: static;
+                transform: none;
+                margin-top: 28px
             }
         }
 
         .error {
             position: fixed;
-            top: 15px;
+            top: 18px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90vw;
-            text-align: center;
-            font-size: clamp(2rem, 6vw, 4rem);
+            padding: 10px 26px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: clamp(1.1rem,4vw,1.6rem);
+            color: #fff;
+            background: rgba(160,30,40,.9);
+            border: 1px solid #ff8a8e;
+            box-shadow: 0 10px 30px rgba(0,0,0,.5);
             visibility: hidden;
             opacity: 0;
-            transition: opacity 0.3s ease-out;
-            color: #ff4c4c;
-            font-weight: bold;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
+            transition: opacity .3s;
             z-index: 100;
-            pointer-events: none;
+            pointer-events: none
         }
 
         .skip-btn {
             display: none;
             position: absolute;
-            bottom: -65px;
+            bottom: -66px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 12px 25px;
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-            font-weight: bold;
-            color: white;
-            background-color: #e74c3c;
-            border: none;
+            padding: 12px 26px;
+            font: 600 1.1rem var(--body);
+            color: #fff;
+            background: linear-gradient(180deg,#e85a5f,#b8323a);
+            border: 0;
             border-radius: 12px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.2s, transform 0.1s;
-            white-space: nowrap;
+            box-shadow: 0 4px 0 #7d1f26,0 10px 20px rgba(0,0,0,.5);
+            white-space: nowrap
         }
 
             .skip-btn:hover {
-                background-color: #c0392b;
-                transform: translateX(-50%) scale(1.05);
+                filter: brightness(1.1)
             }
+
+
+        /* kings: big crown + gold rim so they are clearly visible */
+        .king::before {
+            inset: 12% !important;
+            border: 0 !important;
+            background-size: 72% !important;
+            background-position: center 50% !important;
+            z-index: 3
+        }
+
+        .white-piece.king::after {
+            box-shadow: 0 0 0 3px var(--brass),0 0 14px rgba(216,169,74,.7),0 4px 0 #9d8c5a,0 9px 12px rgba(0,0,0,.6),inset 0 2px 3px #fff
+        }
+
+        .black-piece.king::after {
+            box-shadow: 0 0 0 3px var(--brass),0 0 14px rgba(216,169,74,.7),0 4px 0 #000,0 9px 12px rgba(0,0,0,.7),inset 0 2px 3px rgba(255,255,255,.28)
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important;
+                transition: none !important
+            }
+        }
     </style>
 </head>
-<body style="background-image:url('bluebackground.jpg')">
+<body>
     <div id="startdiv">
-        <button id="startbutton" class="startbutton" onclick="chooseMode()"> welcome to uriya's damka game <br /> click here to start! </button>
+        <div class="hero">
+            <div class="emblem"><i class="a"></i><i class="b"></i></div>
+            <h1>Uriya's Damka</h1>
+            <p>Jump, capture, crown. Play a friend, the computer, or anyone online.</p>
+            <button id="startbutton" class="startbutton" onclick="chooseMode()">Play now</button>
+        </div>
     </div>
 
     <div class="container" id="container">
         <div id="error1" class="error"><strong>error!</strong></div>
-
         <div class="board-wrapper">
-            <div class="top-body" id="topbody">
-                <div>1</div><div>2</div><div>3</div><div>4</div>
-                <div>5</div><div>6</div><div>7</div><div>8</div>
-            </div>
-
+            <div class="top-body" id="topbody"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div></div>
             <div class="board-and-right">
                 <div class="board" id="board"></div>
-                <div class="right-body" id="rightbody">
-                    <div>1</div><div>2</div><div>3</div><div>4</div>
-                    <div>5</div><div>6</div><div>7</div><div>8</div>
-                </div>
+                <div class="right-body" id="rightbody"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div></div>
             </div>
-
-            <button id="skipEatBtn" class="skip-btn" onclick="endTurnManually()">finish turn</button>
+            <button id="skipEatBtn" class="skip-btn" onclick="endTurnManually()">Finish turn</button>
         </div>
-
         <div class="bottom-body" id="turn">white player's turn</div>
     </div>
-
-    <script src="Script1test.js"></script>
+    <script src="NewDesignJS.js"></script>
 </body>
 </html>
